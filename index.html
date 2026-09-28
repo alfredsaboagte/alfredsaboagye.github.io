@@ -20,7 +20,7 @@ a{color:var(--hot)}
 
 /* hero */
 .hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;border-bottom:2px solid var(--line)}
-#gear{position:absolute;right:-4%;top:50%;transform:translateY(-50%);width:min(760px,100vw);height:min(760px,100vw);pointer-events:none}
+#gear{position:absolute;right:2%;top:50%;transform:translateY(-50%);width:min(680px,100vw);height:min(680px,100vw);pointer-events:none}
 .hero .wrap{position:relative;z-index:1;padding-top:60px;padding-bottom:60px}
 .hero h1{font-size:clamp(4rem,15vw,10.5rem);text-shadow:0 0 40px var(--bg)}
 .hero h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--line)}
@@ -62,11 +62,40 @@ h2{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:8px}
 footer{margin-top:90px;padding:44px 0 60px;border-top:2px solid var(--line);background:var(--bg2)}
 footer h2{font-size:clamp(2.6rem,8vw,5.5rem)}
 footer a{font-size:1.2rem;font-weight:700}
+/* motion */
+@keyframes rise{from{clip-path:inset(0 0 100% 0);transform:translateY(40px);opacity:0}to{clip-path:inset(0 0 -20% 0);transform:none;opacity:1}}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,122,26,.7)}100%{box-shadow:0 0 0 16px rgba(255,122,26,0)}}
+@keyframes sweep{from{background-position:-200% 0}to{background-position:200% 0}}
+.hero h1{animation:rise .9s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 span{animation:rise .9s .25s cubic-bezier(.2,.8,.2,1) both}
+.hero p{animation:fade .8s .8s backwards}
+.hero .btn{animation:fade .8s 1s backwards}
+.hero .btn.ghost{animation-delay:1.1s}
+.tb{animation:fade .8s 1.3s backwards}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.rv.in{opacity:1;transform:none}
+.frame{transition:border-color .2s,background .2s,transform .2s}
+.frame::before,.frame::after{transition:width .25s,height .25s}
+.frame:hover{border-style:solid;border-color:var(--line);background:rgba(8,38,69,.9);transform:translateY(-4px)}
+.frame:hover::before,.frame:hover::after{width:34px;height:34px}
+.frame .tag{animation:none}
+.path li.now::before{animation:ping 1.8s infinite}
+.chips li{transition:background .15s,color .15s,transform .15s}
+.chips li:hover{transform:translateY(-3px) rotate(-2deg)}
+.hero h2,.btn.ghost:hover{background-image:none}
+.xh{position:fixed;left:0;top:0;z-index:5;pointer-events:none;font-size:.75rem;color:var(--hot);white-space:nowrap;display:none}
+.xh i{position:absolute;left:-12px;top:-1px;width:24px;height:1px;background:var(--hot)}
+.xh i+i{left:-1px;top:-12px;width:1px;height:24px}
+.xh span{position:absolute;left:14px;top:8px}
+@media (hover:hover) and (pointer:fine){.xh{display:block}body{cursor:crosshair}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.xh{display:none!important}}
 @media (max-width:700px){#gear{opacity:.5;right:-30%}.tb{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 </head>
 <body>
+<div class="xh" id="xh" aria-hidden="true"><i></i><i></i><span id="xy">X 0 Y 0</span></div>
 
 <header class="hero">
   <canvas id="gear" aria-hidden="true"></canvas>
@@ -118,8 +147,7 @@ footer a{font-size:1.2rem;font-weight:700}
 <footer id="contact">
   <div class="wrap">
     <h2>Let's build something.</h2>
-    <!-- EDIT: put in your real email and LinkedIn -->
-    <p><a href="mailto:you@example.com">you@example.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/">LinkedIn</a> &nbsp;|&nbsp; <a href="https://github.com/alfredsaboagte">GitHub</a></p>
+    <p><a href="mailto:alfredsaboagye@gmail.com">alfredsaboagye@gmail.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/in/alfredsaboagye/">LinkedIn</a> &nbsp;|&nbsp; <a href="https://github.com/alfredsaboagte">GitHub</a></p>
   </div>
 </footer>
 
@@ -146,10 +174,11 @@ footer a{font-size:1.2rem;font-weight:700}
   }
   function loop(t){
     mx+=(tx-mx)*.05;my+=(ty-my)*.05;
-    var rz=reduce?0.3:t*0.00028,rx=1.05+my*.9,ry=-0.55+mx*1.2;
+    var k=reduce?1:Math.min(1,t/2200),e=1-Math.pow(1-k,3),d=D*e;
+    var rz=reduce?0.3:t*0.00028+(1-e)*4,rx=1.05+my*.9,ry=-0.55+mx*1.2;
     x.clearRect(0,0,W,H);x.lineJoin='round';
-    var F=pts.map(function(p){return proj(p,-D,rz,rx,ry)}),B=pts.map(function(p){return proj(p,D,rz,rx,ry)});
-    var HF=hole.map(function(p){return proj(p,-D,rz,rx,ry)}),HB=hole.map(function(p){return proj(p,D,rz,rx,ry)});
+    var F=pts.map(function(p){return proj(p,-d,rz,rx,ry)}),B=pts.map(function(p){return proj(p,d,rz,rx,ry)});
+    var HF=hole.map(function(p){return proj(p,-d,rz,rx,ry)}),HB=hole.map(function(p){return proj(p,d,rz,rx,ry)});
     function poly(a,col,w){x.beginPath();a.forEach(function(p,k){k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])});x.closePath();x.strokeStyle=col;x.lineWidth=w;x.stroke();}
     x.globalAlpha=.55;poly(B,'#BFE0FF',1.2);poly(HB,'#BFE0FF',1.2);
     x.beginPath();for(var k=0;k<pts.length;k++){x.moveTo(F[k][0],F[k][1]);x.lineTo(B[k][0],B[k][1]);}
@@ -162,6 +191,19 @@ footer a{font-size:1.2rem;font-weight:700}
     if(!reduce)requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);
+})();
+(function(){
+  var els=document.querySelectorAll('section h2,.sub,.frame,.path li,.chips li,footer .wrap > *');
+  els.forEach(function(el,i){el.classList.add('rv');el.style.transitionDelay=(el.matches('.frame,.path li,.chips li')?(i%4)*90:0)+'ms';});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.15});
+    els.forEach(function(el){io.observe(el)});
+  }else{els.forEach(function(el){el.classList.add('in')});}
+  var xh=document.getElementById('xh'),xy=document.getElementById('xy');
+  addEventListener('pointermove',function(e){
+    xh.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';
+    xy.textContent='X '+e.clientX+'  Y '+e.clientY;
+  });
 })();
 </script>
 </body>
