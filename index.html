@@ -6,7 +6,7 @@
 <title>Alfred Aboagye | Design & Manufacturing</title>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0B3157;--bg2:#082645;--line:#BFE0FF;--dim:#7FA9D1;--hot:#FF7A1A}
+:root{--bg:#0E141C;--bg2:#0A0F15;--line:#C9D6E3;--dim:#8398AD;--hot:#FF5A36}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;color:var(--line);font:400 1.05rem/1.65 Barlow,system-ui,sans-serif;background-color:var(--bg);
@@ -29,7 +29,8 @@ a{color:var(--hot)}
 .btn.ghost{background:transparent;color:var(--line);border-color:var(--line);margin-left:8px}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--line)}
 .btn{transition:transform .12s,box-shadow .12s}
-.tb{position:absolute;right:22px;bottom:18px;z-index:1;border:1px solid var(--line);background:rgba(8,38,69,.85);font-size:.85rem;display:grid;grid-template-columns:auto auto;color:var(--dim)}
+.legend{position:absolute;right:22px;top:86px;z-index:1;width:min(280px,60vw);font-size:.8rem;color:var(--dim);animation:fade .8s 1.3s backwards}.legend b{color:var(--line);font-weight:500}.bar{height:14px;margin:6px 0 2px;background:linear-gradient(90deg,#00007f,#0000ff,#00ffff,#7fff7f,#ffff00,#ff0000,#7f0000);border:1px solid var(--line)}.ticks{display:flex;justify-content:space-between}.legend em{display:block;margin-top:4px}
+.tb{position:absolute;right:22px;bottom:18px;z-index:1;border:1px solid var(--line);background:rgba(10,15,21,.85);font-size:.85rem;display:grid;grid-template-columns:auto auto;color:var(--dim)}
 .tb span{padding:4px 12px;border:1px solid rgba(191,224,255,.35)}
 .tb span:nth-child(even){color:var(--line)}
 
@@ -40,7 +41,7 @@ h2{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:8px}
 
 /* project frames */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
-.frame{position:relative;border:2px dashed var(--dim);padding:22px;min-height:230px;background:rgba(8,38,69,.55);display:flex;flex-direction:column;justify-content:flex-end}
+.frame{position:relative;border:2px dashed var(--dim);padding:22px;min-height:230px;background:rgba(10,15,21,.6);display:flex;flex-direction:column;justify-content:flex-end}
 .frame::before,.frame::after{content:"";position:absolute;width:16px;height:16px;border:3px solid var(--hot)}
 .frame::before{top:-3px;left:-3px;border-right:0;border-bottom:0}
 .frame::after{bottom:-3px;right:-3px;border-left:0;border-top:0}
@@ -77,7 +78,7 @@ footer a{font-size:1.2rem;font-weight:700}
 .rv.in{opacity:1;transform:none}
 .frame{transition:border-color .2s,background .2s,transform .2s}
 .frame::before,.frame::after{transition:width .25s,height .25s}
-.frame:hover{border-style:solid;border-color:var(--line);background:rgba(8,38,69,.9);transform:translateY(-4px)}
+.frame:hover{border-style:solid;border-color:var(--line);background:rgba(10,15,21,.95);transform:translateY(-4px)}
 .frame:hover::before,.frame:hover::after{width:34px;height:34px}
 .frame .tag{animation:none}
 .path li.now::before{animation:ping 1.8s infinite}
@@ -90,7 +91,7 @@ footer a{font-size:1.2rem;font-weight:700}
 .xh span{position:absolute;left:14px;top:8px}
 @media (hover:hover) and (pointer:fine){.xh{display:block}body{cursor:crosshair}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.xh{display:none!important}}
-@media (max-width:700px){#gear{opacity:.5;right:-30%}.tb{display:none}}
+@media (max-width:700px){#gear{opacity:.5;right:-30%}.tb,.legend{display:none}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 </head>
@@ -102,9 +103,10 @@ footer a{font-size:1.2rem;font-weight:700}
   <div class="wrap">
     <h1>Alfred<span>Aboagye</span></h1>
     <!-- EDIT: rewrite this line in your own words -->
-    <p>Design and manufacturing student turning sketches into parts that actually work.</p>
+    <p>Design and manufacturing student who wants to know where a part will break before it does.</p>
     <a class="btn" href="#projects">See the builds</a><a class="btn ghost" href="#contact">Get in touch</a>
   </div>
+  <div class="legend" aria-hidden="true"><b>Von Mises stress</b><div class="bar"></div><div class="ticks"><span>0</span><span>78</span><span>156</span><span>234</span><span>312 MPa</span></div><em>Sample data, for looks</em></div>
   <div class="tb" aria-hidden="true">
     <span>School</span><span>De Anza College</span>
     <span>Program</span><span>A.S. Design &amp; Mfg Tech</span>
@@ -155,37 +157,55 @@ footer a{font-size:1.2rem;font-weight:700}
 (function(){
   var c=document.getElementById('gear'),x=c.getContext('2d');
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var N=18,R0=0.78,R1=1,D=0.22,pts=[],hole=[],i;
-  for(i=0;i<N;i++){
-    [[0,R0],[.2,R1],[.45,R1],[.65,R0]].forEach(function(p){
-      var a=(i+p[0])*2*Math.PI/N;pts.push([Math.cos(a)*p[1],Math.sin(a)*p[1]]);
-    });
+  var N=18,R0=.78,D=.22,HR=.28,J=6,A=12,cols=N*A,step=2*Math.PI/N,i,j;
+  var prof=[[0,R0],[.2,1],[.45,1],[.65,R0],[1,R0]];
+  function rad(u){for(var k=0;k<4;k++){var a=prof[k],b=prof[k+1];if(u>=a[0]&&u<=b[0])return a[1]+(b[1]-a[1])*(u-a[0])/(b[0]-a[0]);}return R0;}
+  var base=[];
+  for(i=0;i<cols;i++){var th=i*2*Math.PI/cols,ro=rad((th/step)%1);base.push([]);
+    for(j=0;j<=J;j++){var r=HR+(ro-HR)*j/J;base[i].push([Math.cos(th)*r,Math.sin(th)*r]);}}
+  function sig(i,j,t){
+    var g=i/A,ti=Math.floor(g),u=g-ti,rn=j/J;
+    var root=Math.exp(-Math.pow((u-.68)/.07,2))+.55*Math.exp(-Math.pow((u-.03)/.06,2));
+    var tip=.35*Math.exp(-Math.pow((u-.3)/.1,2));
+    var load=Math.pow(.5+.5*Math.cos(t*.0022-ti*.7),4);
+    return Math.min(1,.08+.1*(1-rn)+.95*root*Math.pow(rn,3)*(.5+.5*load)+.4*tip*rn*load+.12*Math.exp(-Math.pow(rn/.12,2)));
   }
-  for(i=0;i<24;i++){var a=i*2*Math.PI/24;hole.push([Math.cos(a)*.28,Math.sin(a)*.28]);}
+  function cl(a){return Math.max(0,Math.min(1,a))}
+  function jet(v){return 'rgb('+Math.round(255*cl(1.5-Math.abs(4*v-3)))+','+Math.round(255*cl(1.5-Math.abs(4*v-2)))+','+Math.round(255*cl(1.5-Math.abs(4*v-1)))+')';}
   var mx=0,my=0,tx=0,ty=0,W,H,S;
   function size(){var d=devicePixelRatio||1;W=c.clientWidth;H=c.clientHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);S=Math.min(W,H)*.36;}
   addEventListener('resize',size);size();
   addEventListener('pointermove',function(e){tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5;});
   function proj(p,z,rz,rx,ry){
-    var cz=Math.cos(rz),sz=Math.sin(rz),X=p[0]*cz-p[1]*sz,Y=p[0]*sz+p[1]*cz,Z=z;
-    var cx=Math.cos(rx),sx=Math.sin(rx),Y2=Y*cx-Z*sx,Z2=Y*sx+Z*cx;
-    var cy=Math.cos(ry),sy=Math.sin(ry),X3=X*cy+Z2*sy,Z3=-X*sy+Z2*cy;
-    var f=3.2/(3.2+Z3);return [W/2+X3*S*f,H/2+Y2*S*f,Z3];
+    var cz=Math.cos(rz),sz=Math.sin(rz),X=p[0]*cz-p[1]*sz,Y=p[0]*sz+p[1]*cz;
+    var cx=Math.cos(rx),sx=Math.sin(rx),Y2=Y*cx-z*sx,Z2=Y*sx+z*cx;
+    var cy=Math.cos(ry),sy=Math.sin(ry),X3=X*cy+Z2*sy,Z3=-X*sy+Z2*cy,f=3.2/(3.2+Z3);
+    return [W/2+X3*S*f,H/2+Y2*S*f];
   }
   function loop(t){
     mx+=(tx-mx)*.05;my+=(ty-my)*.05;
     var k=reduce?1:Math.min(1,t/2200),e=1-Math.pow(1-k,3),d=D*e;
-    var rz=reduce?0.3:t*0.00028+(1-e)*4,rx=1.05+my*.9,ry=-0.55+mx*1.2;
+    var rz=reduce?.3:t*.00028+(1-e)*4,rx=1.05+my*.9,ry=-.55+mx*1.2;
     x.clearRect(0,0,W,H);x.lineJoin='round';
-    var F=pts.map(function(p){return proj(p,-d,rz,rx,ry)}),B=pts.map(function(p){return proj(p,d,rz,rx,ry)});
-    var HF=hole.map(function(p){return proj(p,-d,rz,rx,ry)}),HB=hole.map(function(p){return proj(p,d,rz,rx,ry)});
-    function poly(a,col,w){x.beginPath();a.forEach(function(p,k){k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])});x.closePath();x.strokeStyle=col;x.lineWidth=w;x.stroke();}
-    x.globalAlpha=.55;poly(B,'#BFE0FF',1.2);poly(HB,'#BFE0FF',1.2);
-    x.beginPath();for(var k=0;k<pts.length;k++){x.moveTo(F[k][0],F[k][1]);x.lineTo(B[k][0],B[k][1]);}
-    for(k=0;k<hole.length;k+=2){x.moveTo(HF[k][0],HF[k][1]);x.lineTo(HB[k][0],HB[k][1]);}
-    x.strokeStyle='#7FA9D1';x.lineWidth=1;x.stroke();
-    x.globalAlpha=1;poly(F,'#FF7A1A',2.2);poly(HF,'#FF7A1A',2);
-    x.strokeStyle='rgba(191,224,255,.5)';x.lineWidth=1;x.setLineDash([8,6]);
+    var P=[],B=[],V=[];
+    for(i=0;i<cols;i++){P.push([]);V.push([]);B.push(proj(base[i][J],d,rz,rx,ry));
+      for(j=0;j<=J;j++){P[i].push(proj(base[i][j],-d,rz,rx,ry));V[i].push(sig(i,j,t));}}
+    x.globalAlpha=.5;x.strokeStyle='#7E92A6';x.lineWidth=1;x.beginPath();
+    for(i=0;i<cols;i++){x.lineTo(B[i][0],B[i][1]);}x.closePath();x.stroke();
+    x.beginPath();for(i=0;i<cols;i+=3){x.moveTo(P[i][J][0],P[i][J][1]);x.lineTo(B[i][0],B[i][1]);}x.stroke();
+    x.globalAlpha=e;
+    for(i=0;i<cols;i++){var n=(i+1)%cols;
+      for(j=0;j<J;j++){
+        var v=(V[i][j]+V[n][j]+V[i][j+1]+V[n][j+1])/4,col=jet(v);
+        x.beginPath();x.moveTo(P[i][j][0],P[i][j][1]);x.lineTo(P[n][j][0],P[n][j][1]);x.lineTo(P[n][j+1][0],P[n][j+1][1]);x.lineTo(P[i][j+1][0],P[i][j+1][1]);
+        x.closePath();x.fillStyle=col;x.strokeStyle=col;x.lineWidth=.8;x.fill();x.stroke();}}
+    x.strokeStyle='rgba(8,14,22,.45)';x.lineWidth=.6;x.beginPath();
+    for(j=0;j<=J;j++){for(i=0;i<=cols;i++){var q=P[i%cols][j];i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1]);}}
+    for(i=0;i<cols;i+=2){x.moveTo(P[i][0][0],P[i][0][1]);x.lineTo(P[i][J][0],P[i][J][1]);}
+    x.stroke();
+    x.strokeStyle='#DDE6EE';x.lineWidth=2;x.beginPath();
+    for(i=0;i<=cols;i++){var o=P[i%cols][J];i?x.lineTo(o[0],o[1]):x.moveTo(o[0],o[1]);}x.stroke();
+    x.globalAlpha=1;x.strokeStyle='rgba(201,214,227,.5)';x.lineWidth=1;x.setLineDash([8,6]);
     var a=proj([-1.25,0],0,0,rx,ry),b=proj([1.25,0],0,0,rx,ry);
     x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();x.setLineDash([]);
     if(!reduce)requestAnimationFrame(loop);
