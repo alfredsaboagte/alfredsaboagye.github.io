@@ -1,1 +1,168 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alfred Aboagye | Design & Manufacturing</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B3157;--bg2:#082645;--line:#BFE0FF;--dim:#7FA9D1;--hot:#FF7A1A}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--line);font:400 1.05rem/1.65 Barlow,system-ui,sans-serif;background-color:var(--bg);
+background-image:linear-gradient(rgba(191,224,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(191,224,255,.07) 1px,transparent 1px),
+linear-gradient(rgba(191,224,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(191,224,255,.13) 1px,transparent 1px);
+background-size:20px 20px,20px 20px,100px 100px,100px 100px}
+h1,h2,h3{font-family:"Big Shoulders Display",Impact,sans-serif;margin:0;line-height:.95;font-weight:900;color:#fff}
+a{color:var(--hot)}
+:focus-visible{outline:3px solid var(--hot);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+
+/* hero */
+.hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;border-bottom:2px solid var(--line)}
+#gear{position:absolute;right:-4%;top:50%;transform:translateY(-50%);width:min(760px,100vw);height:min(760px,100vw);pointer-events:none}
+.hero .wrap{position:relative;z-index:1;padding-top:60px;padding-bottom:60px}
+.hero h1{font-size:clamp(4rem,15vw,10.5rem);text-shadow:0 0 40px var(--bg)}
+.hero h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--line)}
+.hero p{max-width:34ch;font-size:1.25rem;margin:24px 0 28px;text-shadow:0 0 12px var(--bg)}
+.btn{display:inline-block;background:var(--hot);color:#0B1A2B;font-weight:700;padding:12px 22px;text-decoration:none;border:2px solid var(--hot)}
+.btn.ghost{background:transparent;color:var(--line);border-color:var(--line);margin-left:8px}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--line)}
+.btn{transition:transform .12s,box-shadow .12s}
+.tb{position:absolute;right:22px;bottom:18px;z-index:1;border:1px solid var(--line);background:rgba(8,38,69,.85);font-size:.85rem;display:grid;grid-template-columns:auto auto;color:var(--dim)}
+.tb span{padding:4px 12px;border:1px solid rgba(191,224,255,.35)}
+.tb span:nth-child(even){color:var(--line)}
+
+/* sections */
+section{padding:84px 0 20px}
+h2{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:8px}
+.sub{color:var(--dim);max-width:52ch;margin:0 0 32px}
+
+/* project frames */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+.frame{position:relative;border:2px dashed var(--dim);padding:22px;min-height:230px;background:rgba(8,38,69,.55);display:flex;flex-direction:column;justify-content:flex-end}
+.frame::before,.frame::after{content:"";position:absolute;width:16px;height:16px;border:3px solid var(--hot)}
+.frame::before{top:-3px;left:-3px;border-right:0;border-bottom:0}
+.frame::after{bottom:-3px;right:-3px;border-left:0;border-top:0}
+.frame h3{font-size:2rem}
+.frame p{margin:6px 0 0;color:var(--dim)}
+.tag{position:absolute;top:16px;right:16px;color:var(--hot);font-weight:700;font-size:.9rem;border:1px solid var(--hot);padding:1px 10px}
+
+/* path (a real sequence, so numbered) */
+.path{list-style:none;margin:0;padding:0;border-left:3px solid var(--line)}
+.path li{position:relative;padding:0 0 30px 34px}
+.path li::before{content:"";position:absolute;left:-11px;top:8px;width:19px;height:19px;background:var(--bg);border:3px solid var(--line);transform:rotate(45deg)}
+.path li.now::before{background:var(--hot);border-color:var(--hot)}
+.path h3{font-size:1.8rem}
+.path p{margin:4px 0 0;color:var(--dim)}
+
+.chips{display:flex;flex-wrap:wrap;gap:10px;padding:0;list-style:none}
+.chips li{border:2px solid var(--line);padding:6px 16px;font-weight:500}
+.chips li:hover{background:var(--line);color:var(--bg2)}
+footer{margin-top:90px;padding:44px 0 60px;border-top:2px solid var(--line);background:var(--bg2)}
+footer h2{font-size:clamp(2.6rem,8vw,5.5rem)}
+footer a{font-size:1.2rem;font-weight:700}
+@media (max-width:700px){#gear{opacity:.5;right:-30%}.tb{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="gear" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <h1>Alfred<span>Aboagye</span></h1>
+    <!-- EDIT: rewrite this line in your own words -->
+    <p>Design and manufacturing student turning sketches into parts that actually work.</p>
+    <a class="btn" href="#projects">See the builds</a><a class="btn ghost" href="#contact">Get in touch</a>
+  </div>
+  <div class="tb" aria-hidden="true">
+    <span>School</span><span>De Anza College</span>
+    <span>Program</span><span>A.S. Design &amp; Mfg Tech</span>
+    <span>Next</span><span>Transfer, Mech. Eng.</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="projects">
+  <h2>Builds</h2>
+  <p class="sub">First projects are on the drawing board. Each one will get photos, CAD, and a short write-up.</p>
+  <!-- EDIT: when you finish a project, change a frame's title, text, and tag. Copy a whole <article> to add more. -->
+  <div class="grid">
+    <article class="frame"><span class="tag">In progress</span><h3>Project 001</h3><p>Your first CAD model or machined part goes here.</p></article>
+    <article class="frame"><span class="tag">Planned</span><h3>Project 002</h3><p>A 3D printed design, fixture, or tool.</p></article>
+    <article class="frame"><span class="tag">Planned</span><h3>Project 003</h3><p>A CNC or manual machining project from class.</p></article>
+  </div>
+</section>
+
+<section id="path">
+  <h2>The path</h2>
+  <p class="sub">Where I am and where I'm headed.</p>
+  <ol class="path">
+    <li class="now"><h3>De Anza College</h3><p>Working on an A.S. in Design and Manufacturing Technology.</p></li>
+    <li><h3>Build a portfolio</h3><p>CAD models, machined parts, and prints, documented as I make them.</p></li>
+    <li><h3>Transfer</h3><p>Moving on to a four-year mechanical engineering program.</p></li>
+  </ol>
+</section>
+
+<section id="skills">
+  <h2>Tools</h2>
+  <p class="sub">What I'm learning to use.</p>
+  <!-- EDIT: keep only what's true for you -->
+  <ul class="chips"><li>CAD</li><li>Technical drawings</li><li>3D printing</li><li>CNC machining</li><li>Manual mill &amp; lathe</li><li>GD&amp;T</li></ul>
+</section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Let's build something.</h2>
+    <!-- EDIT: put in your real email and LinkedIn -->
+    <p><a href="mailto:you@example.com">you@example.com</a> &nbsp;|&nbsp; <a href="https://www.linkedin.com/">LinkedIn</a> &nbsp;|&nbsp; <a href="https://github.com/alfredsaboagte">GitHub</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var c=document.getElementById('gear'),x=c.getContext('2d');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var N=18,R0=0.78,R1=1,D=0.22,pts=[],hole=[],i;
+  for(i=0;i<N;i++){
+    [[0,R0],[.2,R1],[.45,R1],[.65,R0]].forEach(function(p){
+      var a=(i+p[0])*2*Math.PI/N;pts.push([Math.cos(a)*p[1],Math.sin(a)*p[1]]);
+    });
+  }
+  for(i=0;i<24;i++){var a=i*2*Math.PI/24;hole.push([Math.cos(a)*.28,Math.sin(a)*.28]);}
+  var mx=0,my=0,tx=0,ty=0,W,H,S;
+  function size(){var d=devicePixelRatio||1;W=c.clientWidth;H=c.clientHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);S=Math.min(W,H)*.36;}
+  addEventListener('resize',size);size();
+  addEventListener('pointermove',function(e){tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5;});
+  function proj(p,z,rz,rx,ry){
+    var cz=Math.cos(rz),sz=Math.sin(rz),X=p[0]*cz-p[1]*sz,Y=p[0]*sz+p[1]*cz,Z=z;
+    var cx=Math.cos(rx),sx=Math.sin(rx),Y2=Y*cx-Z*sx,Z2=Y*sx+Z*cx;
+    var cy=Math.cos(ry),sy=Math.sin(ry),X3=X*cy+Z2*sy,Z3=-X*sy+Z2*cy;
+    var f=3.2/(3.2+Z3);return [W/2+X3*S*f,H/2+Y2*S*f,Z3];
+  }
+  function loop(t){
+    mx+=(tx-mx)*.05;my+=(ty-my)*.05;
+    var rz=reduce?0.3:t*0.00028,rx=1.05+my*.9,ry=-0.55+mx*1.2;
+    x.clearRect(0,0,W,H);x.lineJoin='round';
+    var F=pts.map(function(p){return proj(p,-D,rz,rx,ry)}),B=pts.map(function(p){return proj(p,D,rz,rx,ry)});
+    var HF=hole.map(function(p){return proj(p,-D,rz,rx,ry)}),HB=hole.map(function(p){return proj(p,D,rz,rx,ry)});
+    function poly(a,col,w){x.beginPath();a.forEach(function(p,k){k?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1])});x.closePath();x.strokeStyle=col;x.lineWidth=w;x.stroke();}
+    x.globalAlpha=.55;poly(B,'#BFE0FF',1.2);poly(HB,'#BFE0FF',1.2);
+    x.beginPath();for(var k=0;k<pts.length;k++){x.moveTo(F[k][0],F[k][1]);x.lineTo(B[k][0],B[k][1]);}
+    for(k=0;k<hole.length;k+=2){x.moveTo(HF[k][0],HF[k][1]);x.lineTo(HB[k][0],HB[k][1]);}
+    x.strokeStyle='#7FA9D1';x.lineWidth=1;x.stroke();
+    x.globalAlpha=1;poly(F,'#FF7A1A',2.2);poly(HF,'#FF7A1A',2);
+    x.strokeStyle='rgba(191,224,255,.5)';x.lineWidth=1;x.setLineDash([8,6]);
+    var a=proj([-1.25,0],0,0,rx,ry),b=proj([1.25,0],0,0,rx,ry);
+    x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.stroke();x.setLineDash([]);
+    if(!reduce)requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
